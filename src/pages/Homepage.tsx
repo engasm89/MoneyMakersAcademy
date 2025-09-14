@@ -18,6 +18,7 @@ import {
   Play
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import MobileNavigation from "@/components/MobileNavigation";
 
 const Homepage = () => {
   return (
@@ -43,10 +44,13 @@ const Homepage = () => {
               <Link to="/community" className="text-slate-600 hover:text-blue-600 transition-colors">
                 Community
               </Link>
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                Start Free
-              </Button>
+              <Link to="/courses">
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  Start Free
+                </Button>
+              </Link>
             </div>
+            <MobileNavigation />
           </div>
         </div>
       </nav>
@@ -64,16 +68,24 @@ const Homepage = () => {
             Master freelancing, digital marketing, and algorithmic trading under one roof.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4">
-              Explore Trading Solutions
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4">
-              Start Free Course
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4">
-              Book Strategy Call
-            </Button>
+            <Link to="/trading">
+              <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4">
+                Explore Trading Solutions
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/courses">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4">
+                Start Free Course
+              </Button>
+            </Link>
+            <Link to="/contact">
+            <Link to="/contact">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4">
+                Book Strategy Call
+              </Button>
+            </Link>
+            </Link>
           </div>
           
           {/* Trust Indicators */}
@@ -156,10 +168,12 @@ const Homepage = () => {
                     <span className="font-semibold text-red-600">10-20%/month</span>
                   </div>
                 </div>
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  View Managed Accounts
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link to="/trading/managed-accounts">
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    View Managed Accounts
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
@@ -187,10 +201,12 @@ const Homepage = () => {
                     <span className="text-sm">Risk Controls</span>
                   </div>
                 </div>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  Browse EAs
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link to="/trading/expert-advisors">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                    Browse EAs
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
@@ -218,10 +234,12 @@ const Homepage = () => {
                     <span className="text-sm">Forward Testing</span>
                   </div>
                 </div>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                  Request Custom EA
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link to="/trading/custom-ea">
+                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                    Request Custom EA
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -260,10 +278,12 @@ const Homepage = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              See Full Performance Dashboard
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/trading/managed-accounts">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                See Full Performance Dashboard
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -311,9 +331,11 @@ const Homepage = () => {
                     <span className="text-sm">Project Management</span>
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
-                  Explore Freelancing Courses
-                </Button>
+                <Link to="/courses">
+                  <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
+                    Explore Freelancing Courses
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
@@ -346,9 +368,11 @@ const Homepage = () => {
                     <span className="text-sm">Risk Management</span>
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full border-blue-300 text-blue-700 hover:bg-blue-50">
-                  Explore Trading Courses
-                </Button>
+                <Link to="/courses">
+                  <Button variant="outline" className="w-full border-blue-300 text-blue-700 hover:bg-blue-50">
+                    Explore Trading Courses
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
@@ -381,9 +405,11 @@ const Homepage = () => {
                     <span className="text-sm">Productivity</span>
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full border-purple-300 text-purple-700 hover:bg-purple-50">
-                  Explore Passive Income
-                </Button>
+                <Link to="/courses">
+                  <Button variant="outline" className="w-full border-purple-300 text-purple-700 hover:bg-purple-50">
+                    Explore Passive Income
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -426,14 +452,18 @@ const Homepage = () => {
               </div>
 
               <div className="space-y-4">
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Join Telegram Community
-                </Button>
-                <Button variant="outline" className="w-full border-white text-white hover:bg-white hover:text-slate-800">
-                  <Users className="mr-2 h-5 w-5" />
-                  Join Discord Server
-                </Button>
+                <Link to="/community">
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Join Telegram Community
+                  </Button>
+                </Link>
+                <Link to="/community">
+                  <Button variant="outline" className="w-full border-white text-white hover:bg-white hover:text-slate-800">
+                    <Users className="mr-2 h-5 w-5" />
+                    Join Discord Server
+                  </Button>
+                </Link>
               </div>
             </div>
 
@@ -525,10 +555,12 @@ const Homepage = () => {
               </div>
             </div>
             
-            <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4">
-              <Download className="mr-2 h-5 w-5" />
-              Download Free Starter Pack
-            </Button>
+            <Link to="/courses">
+              <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4">
+                <Download className="mr-2 h-5 w-5" />
+                Download Free Starter Pack
+              </Button>
+            </Link>
           </div>
           
           <p className="text-sm text-blue-200">
@@ -595,5 +627,7 @@ const Homepage = () => {
     </div>
   );
 };
+
+export default Homepage;
 
 export default Homepage;
