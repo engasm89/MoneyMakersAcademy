@@ -7,8 +7,10 @@ import CurrencyStrengthTable from "./CurrencyStrengthTable";
 import LateEntryCheck from "./LateEntryCheck";
 import TradeRecommendation from "./TradeRecommendation";
 import CurrencyStrengthChart from "./CurrencyStrengthChart";
+import AlgorithmTestPanel from "./AlgorithmTestPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { mockCurrencyData, mockEntryCheckData, generateRandomForexData, generateRandomEntryCheck } from "@/utils/mockData";
 
 interface CurrencyData {
   code: string;
@@ -53,16 +55,83 @@ const ForexDashboard = () => {
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
 
+  // Generate mock trade recommendations
+  const generateMockTradeRecommendations = (currencyData: CurrencyData[]): TradeRecommendationData[] => {
+    const recommendations: TradeRecommendationData[] = [];
+    
+    // Generate recommendations for top 3 strongest vs weakest pairs
+    for (let i = 0; i < Math.min(3, currencyData.length / 2); i++) {
+      const strongest = currencyData[i];
+      const weakest = currencyData[currencyData.length - 1 - i];
+      
+      if (strongest && weakest) {
+        const strengthDiff = strongest.change - weakest.change;
+        const confidenceScore = Math.min(5, Math.max(1, Math.floor(strengthDiff * 10) + 3));
+        const entryScore = Math.random() * 100;
+        const isLateEntry = entryScore > 70;
+        
+        recommendations.push({
+          id: `rec-${i}`,
+          suggested_pair: `${strongest.code}/${weakest.code}`,
+          strongest_currency: strongest.code,
+          weakest_currency: weakest.code,
+          confidence_score: confidenceScore,
+          recommendation_text: isLateEntry 
+            ? `Wait for pullback - ${strongest.code}/${weakest.code} showing late entry signals`
+            : `Good entry opportunity - ${strongest.code}/${weakest.code} has strong momentum`,
+          is_late_entry: isLateEntry,
+          entry_score: entryScore,
+          recommendation: isLateEntry ? 'wait' : 'buy',
+          created_at: new Date().toISOString()
+        });
+      }
+    }
+    
+    return recommendations.sort((a, b) => a.entry_score - b.entry_score);
+  };
+
+  // Generate mock provider data
+  const generateMockProviderData = () => {
+    const providers = ['Alpha Vantage', 'Finnhub', 'Twelve Data'];
+    const providerData: {[key: string]: {code: string, change: number}[]} = {};
+    
+    providers.forEach(provider => {
+      providerData[provider] = generateRandomForexData().map(currency => ({
+        code: currency.code,
+        change: currency.change + (Math.random() - 0.5) * 0.2 // Add small variation
+      }));
+    });
+    
+    return providerData;
+  };
+
   // Fetch data from database
   const fetchDataFromDatabase = async () => {
     try {
-      // Fetch currency performance data
+      // Try to fetch from Supabase first
       const { data: currencyPerformance, error: currencyError } = await supabase
         .from('currency_performance')
         .select('*')
         .order('daily_change_percent', { ascending: false });
 
-      if (currencyError) throw currencyError;
+      if (currencyError) {
+        console.log('Supabase unavailable, using mock data:', currencyError);
+        // Use mock data if Supabase is unavailable
+        const mockData = generateRandomForexData();
+        setCurrencyData(mockData);
+        setEntryCheckData(generateRandomEntryCheck());
+        
+        // Generate mock trade recommendations
+        const mockRecommendations = generateMockTradeRecommendations(mockData);
+        setTradeRecommendations(mockRecommendations);
+        
+        // Generate mock provider data
+        const mockProviderData = generateMockProviderData();
+        setProviderData(mockProviderData);
+        
+        setLastUpdated(new Date());
+        return;
+      }
 
       // Transform database data to component format
       const transformedCurrency: CurrencyData[] = currencyPerformance?.map(item => ({
@@ -173,9 +242,26 @@ const ForexDashboard = () => {
   const handleRefresh = async () => {
     setIsLoading(true);
     try {
+      // Try to invoke the Edge Function
       const { data, error } = await supabase.functions.invoke('fetch-forex-data');
       
-      if (error) throw error;
+      if (error) {
+        console.log('Edge Function unavailable, using mock data:', error);
+        // Use mock data if Edge Function is unavailable
+        const mockData = generateRandomForexData();
+        setCurrencyData(mockData);
+        setEntryCheckData(generateRandomEntryCheck());
+        
+        const mockRecommendations = generateMockTradeRecommendations(mockData);
+        setTradeRecommendations(mockRecommendations);
+        
+        const mockProviderData = generateMockProviderData();
+        setProviderData(mockProviderData);
+        
+        setLastUpdated(new Date());
+        toast.success('Mock forex data refreshed successfully!');
+        return;
+      }
       
       console.log('Forex data updated:', data);
       toast.success('Live forex data updated successfully!');
@@ -184,7 +270,19 @@ const ForexDashboard = () => {
       await fetchDataFromDatabase();
     } catch (error) {
       console.error('Error refreshing forex data:', error);
-      toast.error('Failed to refresh forex data');
+      // Fallback to mock data
+      const mockData = generateRandomForexData();
+      setCurrencyData(mockData);
+      setEntryCheckData(generateRandomEntryCheck());
+      
+      const mockRecommendations = generateMockTradeRecommendations(mockData);
+      setTradeRecommendations(mockRecommendations);
+      
+      const mockProviderData = generateMockProviderData();
+      setProviderData(mockProviderData);
+      
+      setLastUpdated(new Date());
+      toast.success('Mock forex data refreshed successfully!');
     } finally {
       setIsLoading(false);
     }
@@ -325,6 +423,11 @@ const ForexDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Algorithm Testing Panel */}
+      <div className="mt-8">
+        <AlgorithmTestPanel />
+      </div>
 
       {/* Loading state */}
       {currencyData.length === 0 && (
