@@ -41,6 +41,9 @@ const Homepage = () => {
               <Link to="/courses" className="text-slate-600 hover:text-blue-600 transition-colors">
                 Courses
               </Link>
+              <Link to="/market-alerts" className="text-slate-600 hover:text-blue-600 transition-colors">
+                Market Alerts
+              </Link>
               <Link to="/community" className="text-slate-600 hover:text-blue-600 transition-colors">
                 Community
               </Link>

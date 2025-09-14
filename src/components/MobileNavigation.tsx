@@ -12,7 +12,8 @@ import {
   BarChart3,
   Shield,
   MessageCircle,
-  Home
+  Home,
+  Bell
 } from "lucide-react";
 
 const MobileNavigation = () => {
@@ -24,6 +25,7 @@ const MobileNavigation = () => {
     { name: "Trading Dashboard", href: "/trading-dashboard", icon: TrendingUp },
     { name: "Trading Solutions", href: "/trading", icon: Bot },
     { name: "Courses", href: "/courses", icon: BookOpen },
+    { name: "Market Alerts", href: "/market-alerts", icon: Bell },
     { name: "Community", href: "/community", icon: Users },
     { name: "About", href: "/about", icon: MessageCircle },
     { name: "Contact", href: "/contact", icon: MessageCircle },
