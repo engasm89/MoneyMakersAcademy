@@ -1,130 +1,118 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { 
-  TrendingUp, 
   Search, 
   Calendar, 
   User, 
-  ArrowRight,
-  Tag,
+  ArrowRight, 
+  TrendingUp,
+  BookOpen,
+  MessageCircle,
+  Download,
+  Play,
   Clock,
-  Eye,
-  Heart,
-  Share2
+  Eye
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import MobileNavigation from "@/components/MobileNavigation";
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
 
   const blogPosts = [
     {
       id: 1,
       title: "The Complete Guide to Algorithmic Trading in 2024",
-      excerpt: "Learn the fundamentals of algorithmic trading, from basic concepts to advanced strategies. Discover how to build profitable trading systems.",
-      author: "Sarah Johnson",
+      excerpt: "Learn how to build profitable trading algorithms from scratch. This comprehensive guide covers everything from strategy development to risk management.",
+      author: "Sarah Chen",
       date: "2024-01-15",
-      readTime: "8 min read",
-      category: "Education",
-      tags: ["Algorithmic Trading", "Strategy", "Beginner"],
+      readTime: "12 min read",
+      category: "Algorithmic Trading",
       image: "/api/placeholder/400/250",
-      views: 1250,
-      likes: 89
+      views: 2847,
+      featured: true
     },
     {
       id: 2,
-      title: "Expert Advisor Development: From Strategy to Code",
-      excerpt: "Step-by-step guide to developing your first Expert Advisor for MT4/MT5. Learn MQL4/MQL5 programming and backtesting techniques.",
-      author: "Michael Chen",
+      title: "Expert Advisor Development: From Idea to Profit",
+      excerpt: "Step-by-step process of creating your first Expert Advisor for MetaTrader 4/5. Includes code examples and testing strategies.",
+      author: "Michael Rodriguez",
       date: "2024-01-12",
-      readTime: "12 min read",
-      category: "Development",
-      tags: ["MQL4", "MQL5", "Expert Advisor", "Programming"],
+      readTime: "8 min read",
+      category: "Expert Advisors",
       image: "/api/placeholder/400/250",
-      views: 980,
-      likes: 67
+      views: 1923
     },
     {
       id: 3,
-      title: "Risk Management: The Key to Long-Term Trading Success",
-      excerpt: "Understanding risk management principles and implementing them in your trading strategy. Learn position sizing and risk controls.",
-      author: "Dr. Lisa Wang",
+      title: "Risk Management Strategies for Automated Trading",
+      excerpt: "Protect your capital with proven risk management techniques. Learn position sizing, stop-loss strategies, and portfolio diversification.",
+      author: "Dr. James Wilson",
       date: "2024-01-10",
-      readTime: "6 min read",
+      readTime: "10 min read",
       category: "Risk Management",
-      tags: ["Risk Management", "Position Sizing", "Psychology"],
       image: "/api/placeholder/400/250",
-      views: 756,
-      likes: 45
+      views: 1654
     },
     {
       id: 4,
-      title: "Managed Accounts vs. Self-Trading: Which is Right for You?",
-      excerpt: "Compare managed account services with self-trading approaches. Understand the pros and cons of each method.",
-      author: "David Rodriguez",
+      title: "Backtesting vs Forward Testing: What You Need to Know",
+      excerpt: "Understanding the difference between backtesting and forward testing, and why both are crucial for successful algorithmic trading.",
+      author: "Lisa Thompson",
       date: "2024-01-08",
-      readTime: "5 min read",
-      category: "Managed Accounts",
-      tags: ["Managed Accounts", "Self-Trading", "Comparison"],
+      readTime: "6 min read",
+      category: "Testing",
       image: "/api/placeholder/400/250",
-      views: 634,
-      likes: 32
+      views: 1432
     },
     {
       id: 5,
-      title: "Market Analysis: EUR/USD Technical Outlook",
-      excerpt: "Current technical analysis of EUR/USD pair with trading opportunities and key support/resistance levels.",
-      author: "Sarah Johnson",
+      title: "Building a Diversified Trading Portfolio",
+      excerpt: "Learn how to create a balanced portfolio of trading strategies across different markets and timeframes for consistent returns.",
+      author: "Robert Kim",
       date: "2024-01-05",
-      readTime: "4 min read",
-      category: "Market Analysis",
-      tags: ["EUR/USD", "Technical Analysis", "Forex"],
+      readTime: "9 min read",
+      category: "Portfolio Management",
       image: "/api/placeholder/400/250",
-      views: 892,
-      likes: 56
+      views: 1287
     },
     {
       id: 6,
-      title: "Building a Diversified Trading Portfolio",
-      excerpt: "Learn how to diversify your trading portfolio across different asset classes and strategies for better risk-adjusted returns.",
-      author: "Michael Chen",
+      title: "The Psychology of Automated Trading",
+      excerpt: "Overcoming emotional trading decisions and maintaining discipline when using automated systems.",
+      author: "Dr. Amanda Foster",
       date: "2024-01-03",
       readTime: "7 min read",
-      category: "Portfolio Management",
-      tags: ["Portfolio", "Diversification", "Asset Allocation"],
+      category: "Psychology",
       image: "/api/placeholder/400/250",
-      views: 445,
-      likes: 28
+      views: 1156
     }
   ];
 
   const categories = [
-    { name: "All", value: "all" },
-    { name: "Education", value: "Education" },
-    { name: "Development", value: "Development" },
-    { name: "Risk Management", value: "Risk Management" },
-    { name: "Managed Accounts", value: "Managed Accounts" },
-    { name: "Market Analysis", value: "Market Analysis" },
-    { name: "Portfolio Management", value: "Portfolio Management" }
+    "All",
+    "Algorithmic Trading",
+    "Expert Advisors", 
+    "Risk Management",
+    "Testing",
+    "Portfolio Management",
+    "Psychology"
   ];
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredPosts = blogPosts.filter(post => 
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <TrendingUp className="h-8 w-8 text-blue-600" />
@@ -146,35 +134,37 @@ const Blog = () => {
               <Link to="/community" className="text-slate-600 hover:text-blue-600 transition-colors">
                 Community
               </Link>
-              <Link to="/blog" className="text-blue-600 font-semibold">
-                Blog
+              <Link to="/courses">
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  Start Free
+                </Button>
               </Link>
             </div>
+            <MobileNavigation />
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Trading Insights & Education
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto">
-            Stay updated with the latest trading strategies, market analysis, and educational content 
-            from our expert team.
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Stay ahead with expert insights, tutorials, and market analysis from our team of professional traders
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
               <Input
                 type="text"
-                placeholder="Search articles, strategies, or topics..."
+                placeholder="Search articles, tutorials, and insights..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 text-lg bg-white/90 border-0 rounded-lg"
+                className="pl-10 pr-4 py-3 text-lg bg-white text-slate-900 border-0 rounded-lg shadow-lg"
               />
             </div>
           </div>
@@ -183,189 +173,186 @@ const Blog = () => {
 
       {/* Categories */}
       <section className="py-8 bg-white border-b">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap gap-2 justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((category) => (
-              <Button
-                key={category.value}
-                variant={selectedCategory === category.value ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.value)}
-                className="rounded-full"
+              <Badge
+                key={category}
+                variant={category === "All" ? "default" : "outline"}
+                className="px-4 py-2 text-sm cursor-pointer hover:bg-blue-50"
               >
-                {category.name}
-              </Button>
+                {category}
+              </Badge>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Blog Posts */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post) => (
-              <Card key={post.id} className="hover:shadow-xl transition-shadow group">
-                <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 rounded-t-lg flex items-center justify-center">
-                  <TrendingUp className="h-16 w-16 text-blue-600" />
+      {/* Featured Post */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-slate-800 mb-8">Featured Article</h2>
+          {filteredPosts.filter(post => post.featured).map((post) => (
+            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="md:flex">
+                <div className="md:w-1/2">
+                  <div className="h-64 md:h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    <Play className="h-16 w-16 text-blue-600" />
+                  </div>
                 </div>
-                
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="text-xs">
-                      {post.category}
-                    </Badge>
-                    <span className="text-xs text-slate-500">•</span>
-                    <span className="text-xs text-slate-500">{post.readTime}</span>
+                <div className="md:w-1/2 p-8">
+                  <div className="flex items-center space-x-4 mb-4">
+                    <Badge className="bg-blue-100 text-blue-800">Featured</Badge>
+                    <Badge variant="outline">{post.category}</Badge>
                   </div>
-                  
-                  <CardTitle className="text-lg leading-tight group-hover:text-blue-600 transition-colors">
-                    {post.title}
-                  </CardTitle>
-                  
-                  <p className="text-slate-600 text-sm line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                </CardHeader>
-                
-                <CardContent className="pt-0">
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">
-                        <Tag className="h-3 w-3 mr-1" />
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
+                  <h3 className="text-2xl font-bold text-slate-800 mb-4">{post.title}</h3>
+                  <p className="text-slate-600 mb-6">{post.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4 text-sm text-slate-500">
+                      <div className="flex items-center space-x-1">
                         <User className="h-4 w-4" />
                         <span>{post.author}</span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
-                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                        <span>{post.date}</span>
                       </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{post.readTime}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Eye className="h-4 w-4" />
+                        <span>{post.views.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <Button className="bg-blue-600 hover:bg-blue-700">
+                      Read More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Blog Posts Grid */}
+      <section className="py-12 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-slate-800 mb-8">Latest Articles</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPosts.filter(post => !post.featured).map((post) => (
+              <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                  <BookOpen className="h-12 w-12 text-blue-600" />
+                </div>
+                <CardHeader>
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Badge variant="outline">{post.category}</Badge>
+                  </div>
+                  <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-slate-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                  <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
+                    <div className="flex items-center space-x-1">
+                      <User className="h-4 w-4" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>{post.date}</span>
                     </div>
                   </div>
-                  
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-sm text-slate-500">
-                      <div className="flex items-center gap-1">
+                    <div className="flex items-center space-x-4 text-sm text-slate-500">
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{post.readTime}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
                         <Eye className="h-4 w-4" />
-                        <span>{post.views}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Heart className="h-4 w-4" />
-                        <span>{post.likes}</span>
+                        <span>{post.views.toLocaleString()}</span>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Share2 className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                        Read More
-                        <ArrowRight className="ml-1 h-4 w-4" />
-                      </Button>
-                    </div>
+                    <Button variant="outline" size="sm">
+                      Read More
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-          
-          {filteredPosts.length === 0 && (
-            <div className="text-center py-12">
-              <Search className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-slate-600 mb-2">No articles found</h3>
-              <p className="text-slate-500">Try adjusting your search terms or category filter.</p>
-            </div>
-          )}
         </div>
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-4">
-            Stay Updated with Our Latest Content
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Get the latest trading insights, market analysis, and educational content 
-            delivered directly to your inbox.
+      <section className="py-16 bg-blue-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-xl mb-8">
+            Get the latest trading insights, tutorials, and market analysis delivered to your inbox
           </p>
-          
-          <div className="max-w-md mx-auto flex gap-3">
+          <div className="max-w-md mx-auto flex space-x-4">
             <Input
               type="email"
               placeholder="Enter your email"
-              className="bg-white/90 border-0 text-slate-800"
+              className="flex-1 bg-white text-slate-900 border-0"
             />
             <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8">
               Subscribe
             </Button>
           </div>
-          
-          <p className="text-sm text-blue-200 mt-4">
-            Join 2,500+ traders who receive our weekly insights
+          <p className="text-sm mt-4 opacity-80">
+            No spam, unsubscribe at any time
           </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12">
-        <div className="container mx-auto px-6">
+      <footer className="bg-slate-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <TrendingUp className="h-6 w-6 text-blue-400" />
                 <span className="text-xl font-bold">Money Makers Academy</span>
               </div>
-              <p className="text-slate-400 mb-4">
-                Empowering traders and entrepreneurs with education, 
-                automation, and managed trading solutions.
+              <p className="text-slate-300 mb-4">
+                Empowering traders worldwide with algorithmic trading education and expert solutions.
               </p>
             </div>
-            
             <div>
               <h3 className="font-semibold mb-4">Trading Solutions</h3>
-              <ul className="space-y-2 text-slate-400">
-                <li><Link to="/trading/expert-advisors" className="hover:text-white transition-colors">Expert Advisors</Link></li>
-                <li><Link to="/trading/custom-ea" className="hover:text-white transition-colors">Custom EA Development</Link></li>
-                <li><Link to="/trading/managed-accounts" className="hover:text-white transition-colors">Managed Accounts</Link></li>
-                <li><Link to="/trading/performance" className="hover:text-white transition-colors">Performance</Link></li>
+              <ul className="space-y-2 text-slate-300">
+                <li><Link to="/trading/expert-advisors" className="hover:text-white">Expert Advisors</Link></li>
+                <li><Link to="/trading/custom-ea" className="hover:text-white">Custom EA Development</Link></li>
+                <li><Link to="/trading/managed-accounts" className="hover:text-white">Managed Accounts</Link></li>
+                <li><Link to="/trading-dashboard" className="hover:text-white">Trading Dashboard</Link></li>
               </ul>
             </div>
-            
             <div>
               <h3 className="font-semibold mb-4">Education</h3>
-              <ul className="space-y-2 text-slate-400">
-                <li><Link to="/courses" className="hover:text-white transition-colors">Course Catalog</Link></li>
-                <li><Link to="/coaching" className="hover:text-white transition-colors">Coaching</Link></li>
-                <li><Link to="/community" className="hover:text-white transition-colors">Community</Link></li>
-                <li><Link to="/success" className="hover:text-white transition-colors">Success Stories</Link></li>
+              <ul className="space-y-2 text-slate-300">
+                <li><Link to="/courses" className="hover:text-white">Courses</Link></li>
+                <li><Link to="/blog" className="hover:text-white">Blog</Link></li>
+                <li><Link to="/community" className="hover:text-white">Community</Link></li>
+                <li><Link to="/success" className="hover:text-white">Success Stories</Link></li>
               </ul>
             </div>
-            
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-slate-400">
-                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              <ul className="space-y-2 text-slate-300">
+                <li><Link to="/about" className="hover:text-white">About Us</Link></li>
+                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
+                <li><Link to="/pricing" className="hover:text-white">Pricing</Link></li>
+                <li><Link to="/privacy" className="hover:text-white">Privacy Policy</Link></li>
               </ul>
             </div>
           </div>
-          
-          <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-            <p className="mb-2">
-              Trading foreign exchange and CFD instruments involves high risk and may not be suitable for all investors. 
-              You could lose some or all of your capital. Past performance is not indicative of future results.
-            </p>
+          <div className="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
             <p>&copy; 2024 Money Makers Academy. All rights reserved.</p>
           </div>
         </div>
